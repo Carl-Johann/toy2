@@ -125,6 +125,19 @@ def create_report
 		$report_file.puts "Average discount: $#{avg_discount(retail_price(toy), totalsales(toy), number_purchases(toy))}"
 		$report_file.puts
 	end
+	brands
+	unique_brands.each do |brand|
+		stock_counter = 0
+		product_counter = 0
+		average_price = 0
+		price_sum = 0
+		$report_file.puts brand.upcase
+		$report_file.puts "*"*27
+		amount_products brand, counter:stock_counter
+		avg_price_brand brand, counter:product_counter, average_price:average_price
+		total_sales brand, counter:price_sum
+		$report_file.puts
+	end
 end
 
 
