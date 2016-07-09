@@ -3,30 +3,10 @@ def setup_files
     path = File.join(File.dirname(__FILE__), '../data/products.json')
     file = File.read(path)
     $products_hash = JSON.parse(file)
-    $report_file = File.new("report.txt", "w+")
+    $report_file = File.new("../report.txt", "w+")
 end
 
 # Print "Sales Report" in ascii art
-def AsciiArt (art)
-	if art == "products"
-		puts "                     _            _       "
-		puts "                    | |          | |      "
-		puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
-		puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
-		puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
-		puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
-		puts "| |                                       "
-		puts "|_|        "
-	end	
-end
-
-
-# Print today's date
-def date
-	time = Time.new
-	$report_file.puts "Todays date: #{time.day}/#{time.month} - #{time.year}"
-end
-# Print "Products" in ascii art
 def ascii_sales_report
 		$report_file.puts"           _                                     _   "
 		$report_file.puts"	  | |                                   | |  "
@@ -37,35 +17,55 @@ def ascii_sales_report
 		$report_file.puts"		               | |                   "
 		$report_file.puts"		               |_|                   "
 end
+
+# Print today's date
+def date
+	time = Time.new
+	$report_file.puts "Todays date: #{time.day}/#{time.month} - #{time.year}"
+	$report_file.puts
+end
+# Print "Products" in ascii art
+def ascii_art_products
+	$report_file.puts "                     _            _       "
+	$report_file.puts "                    | |          | |      "
+	$report_file.puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
+	$report_file.puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
+	$report_file.puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
+	$report_file.puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
+	$report_file.puts "| |                                       "
+	$report_file.puts "|_|        "		
+	$report_file.puts
+end
+
 # For each product in the data set:
 	# Print the name of the toy
-def title(variabel)
-	variabel["title"]
+def title(toy)
+	toy["title"]
 end
 	# Print the retail price of the toy
-def retail_price(variabel) 
-	variabel["full-price"]
+def retail_price(toy) 
+	toy["full-price"]
 end
 	# Calculate and print the total number of purchases
-def number_purchases(variabel)
-	variabel["purchases"].length
+def number_purchases(toy)
+	toy["purchases"].length
 end
 	# Calculate and print the total amount of sales
-def totalsales(variabel)
+def totalsales(toy)
 	prices = 0
-	variabel["purchases"].each {|pris| prices+= pris["price"]}
+	toy["purchases"].each {|pris| prices+= pris["price"]}
 	prices
 end
 	# Calculate and print the average price the toy sold for
-def avg_price(variabel, priser)
-	priser/variabel
+def avg_price(number_purchases, prices)
+	prices/number_purchases
 end
 	# Calculate and print the average discount (% or $) based off the average sales price
 def avg_discount(full_price, prices, length)
 	full_price.to_f - (prices.to_f/length.to_f)
 end	
 	# Print "Brands" in ascii art
-def brands
+def ascii_art_brands
 		$report_file.puts " _                         _     "
 		$report_file.puts "| |                       | |    "
 		$report_file.puts "| |__  _ __ __ _ _ __   __| |___ "
@@ -80,13 +80,13 @@ def unique_brands
 	$products_hash["items"].map{ |product| product["brand"] }.uniq
 end
 	# Count and print the number of the brand's toys we stock
-def amount_products(brand, lort = {})
+def amount_products(brand, options = {})
 	$products_hash["items"].each do |toy|
 		if toy["brand"] == brand
-			lort[:counter] += toy["stock"]
+			options[:counter] += toy["stock"]
 		end
 	end
-	$report_file.puts "Amount of Products: #{lort[:counter]}"
+	$report_file.puts "Amount of Products: #{options[:counter]}"
 end
 	# Calculate and print the average price of the brand's toys
 def avg_price_brand(brand, options = {})
@@ -113,8 +113,9 @@ end
 
 
 def create_report 
+	ascii_sales_report
 	date
-	$report_file.puts ascii_sales_report
+	ascii_art_products
 	$products_hash["items"].each do |toy|
 		$report_file.puts title(toy)
 		$report_file.puts "*"*27
@@ -125,7 +126,7 @@ def create_report
 		$report_file.puts "Average discount: $#{avg_discount(retail_price(toy), totalsales(toy), number_purchases(toy))}"
 		$report_file.puts
 	end
-	brands
+	ascii_art_brands
 	unique_brands.each do |brand|
 		stock_counter = 0
 		product_counter = 0
