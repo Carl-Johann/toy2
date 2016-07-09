@@ -1,0 +1,17 @@
+commit 4400ef0b8f2fd03dc631a5055823e4b2e1a084fb
+Author: Carl-Johan Beurling <carljohan.beurling@gmail.com>
+Date:   Thu Jul 7 14:53:47 2016 +0200
+
+    3rd commit proj finito
+
+commit 0fb23ff70f00384b4fdf36f501beb1f17a7dfec6
+Author: Carl-Johan Beurling <carljohan.beurling@gmail.com>
+Date:   Thu Jul 7 14:49:47 2016 +0200
+
+    second commit...
+
+commit 610a7ba14eae469b86c34813e5d08bbcdea16f95
+Author: Carl-Johan Beurling <carljohan.beurling@gmail.com>
+Date:   Mon Jun 6 22:16:05 2016 +0200
+
+    first 11
